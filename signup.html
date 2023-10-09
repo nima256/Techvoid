@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="author" content="templatemo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <title>Techvoid</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-liberty-market.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="assets/css/signup.css">
+</head>
+
+<body>
+
+
+    <!-- ***** Preloader Start ***** -->
+
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+
+                        <a href="index.html" class="logo">
+                            <img src="assets/images/logo.png" alt="">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+
+                        <ul class="nav">
+                            <li><a href="index.html" class="active">Home</a></li>
+                            <li><a href="signup.html">Login/Signin</a></li>
+                            <li><a href="details.html">Shop</a></li>
+                            <li><a href="author.html">About us</a></li>
+                            <li><a href="create.html"><img id="cart" width="30" height="30"
+                                        src="https://img.icons8.com/pastel-glyph/64/1A1A1A/shopping-trolley--v2.png"
+                                        alt="shopping-trolley--v2" /></a></li>
+                        </ul>
+
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <body style="background-image: url(assets/images/bg.jpg);">
+        <div class="wrapper">
+            <div class="title-text">
+                <div class="title login">فرم ورود</div>
+                <div class="title signup"> فرم ثبت نام</div>
+            </div>
+            <div class="form-container">
+                <div class=""></div>
+                <div class="slide-controls">
+                    <input type="radio" name="slide" id="login" checked>
+                    <input type="radio" name="slide" id="signup">
+                    <label for="login" class="slide login">ورود</label>
+                    <label for="signup" class="slide signup">ثبت نام</label>
+                    <div class="slider-tab"></div>
+                </div>
+                <div class="form-inner">
+                    <form method="post" id="login-form" name="login-form" action="" class="login">
+                        <div class="field">
+                            <input type="text" placeholder=" نام کاربری " name="username" id="user_name" required>
+                        </div>
+                        <p id="password"></p>
+                        <div class="field">
+                            <input type="password" placeholder=" کلمه عبور " name="password" id="user_password"
+                                required>
+                        </div>
+                        <p id="error_login_password"></p>
+                        <div class="pass-link"><a href="#"> بازیابی کلمه عبور</a></div>
+                        <div class="field btn">
+                            <div class="btn-layer"></div>
+                            <input type="submit" value="ورود" form="login-form" name="submit" id="login-btn">
+                        </div>
+                        <div class="signup-link"> حساب کابری ندارید؟ <a href="">ایجاد حساب</a></div>
+                    </form>
+
+                    <form method="post" action="register.php" class="signup" id="signup-form" name="signup-form">
+                        <div class="field">
+                            <input id="email" type="email" placeholder=" ایمیل" name="email">
+                        </div>
+                        <p id="email-error"></p>
+                        <div class="field">
+                            <input id="password" type="password" placeholder="کلمه عبور" required name="password">
+                        </div>
+                        <p id="error-password"></p>
+                        <div class="field">
+                            <input id="confirm-password" type="password" placeholder="تکرار کلمه عبور" required
+                                name="confirm_password">
+                        </div>
+                        <p id="error-confirm"></p>
+                        <div class="field btn">
+                            <div class="btn-layer"></div>
+                            <input id="signup-btn" type="submit" name="register" value="ثبت نام" form="signup-form">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="assets/js/signup.js"></script>
+    </body>
+</html>
