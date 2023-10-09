@@ -1,9 +1,10 @@
 // Require packages
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const port = 3000;
 const mongoose = require('mongoose');
-require('dotenv').config();
+const path = require('path');
 
 // Set up mongoDB connection
 mongoose.connect(process.env.MONGO_CONNECTION)
@@ -22,36 +23,36 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 
 // Create home route
-app.get('/' , (req ,res) => {
+app.get('/', (req, res) => {
     res.render('index');
 });
 
 // Create authenication route
-app.get('/authenication' , (req ,res) => {
+app.get('/authenication', (req, res) => {
     res.render('authenication');
 });
 
 // Create authors route
-app.get('/authors' , (req ,res) => {
+app.get('/authors', (req, res) => {
     res.render('authors');
 });
 
 // Create products route
-app.get('/products' , (req ,res) => {
+app.get('/products', (req, res) => {
     res.render('explore');
 });
 
 // Create products info route
-app.get('/productInfo' , (req ,res) => {
+app.get('/productInfo', (req, res) => {
     res.render('details');
 });
 
 // Create cart info route
-app.get('/cart' , (req ,res) => {
+app.get('/cart', (req, res) => {
     res.render('cart');
 });
 
 // Create server in 3000 port
-app.listen(port , () => {
+app.listen(port, () => {
     console.log("Listening to port 3000");
 });
