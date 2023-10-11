@@ -14,6 +14,7 @@ const emailValidator = require('email-validator');
 
 // Requrie models
 const User = require('./models/user');
+const Product = require('./models/product');
 
 // Set up mongoDB connection
 mongoose.connect(process.env.MONGO_CONNECTION)
@@ -61,6 +62,8 @@ app.use(async (req, res, next) => {
 
 // for redirect user that are not logged in
 const isLoggedIn = (req, res, next) => {
+    /* When a user register or login to website we add a userId to session if it doesn't exsist
+    it means that user is not logged in so we redirect it to /authentication route */
     if (!req.session.userId) {
         req.session.icon = 'error';
         req.session.text = 'ابتدا در سایت ما عضو شوید';
@@ -75,13 +78,28 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-// Create authenication route
-app.get('/authenication', (req, res) => {
-    res.render('authenication');
+// Create authentication route
+app.get('/authentication', (req, res) => {
+    res.render('authentication');
 });
 
-// Create authenication register api
-app.post('/api/authenication/register', async (req, res) => {
+/* Create some common route that are for registering and log in user and when user type them
+in url they will redirect the route that is in our website */
+app.get('/register', (req, res) => {
+    res.redirect('/authentication');
+});
+app.get('/login', (req, res) => {
+    res.redirect('/authentication');
+});
+app.get('/signin', (req, res) => {
+    res.redirect('/authentication');
+});
+app.get('/signup', (req, res) => {
+    res.redirect('/authentication');
+});
+
+// Create authentication register api
+app.post('/api/authentication/register', async (req, res) => {
     try {
         // Give inputes from body and save it to variable
         const { email, username, password, confirmPassword } = req.body;
@@ -107,7 +125,7 @@ app.post('/api/authenication/register', async (req, res) => {
             req.session.icon = 'error';
             req.session.text = 'نام کاربری شما قبلا در سایت ثبت شده است';
             req.flash('error', req.session.text);
-            res.redirect('/authenication');
+            res.redirect('/authentication');
             return;
         };
         /* In this condition if user didn't enter password or username or etc it says error and says
@@ -116,7 +134,7 @@ app.post('/api/authenication/register', async (req, res) => {
             req.session.icon = 'error';
             req.session.text = 'نام کاربری یا رمز عبور یا تکرار رمز عبور یا ایمیل وارد نشده است';
             req.flash('error', req.session.text);
-            res.redirect('/authenication');
+            res.redirect('/authentication');
             return;
         };
         /* Here if the username is lower than 8 character it says error that you have to type username
@@ -125,7 +143,7 @@ app.post('/api/authenication/register', async (req, res) => {
             req.session.icon = 'error';
             req.session.text = 'نام کاربری باید بیشتر از 8 کاراکتر باشد';
             req.flash('error', req.session.text);
-            res.redirect('/authenication');
+            res.redirect('/authentication');
             return;
         };
         // This condition check if the username variable matches the regular expression specified in the regex
@@ -133,7 +151,7 @@ app.post('/api/authenication/register', async (req, res) => {
             req.session.icon = 'error';
             req.session.text = 'نام کاربری شما باید شامل حروف انگلیسی و اعداد باشد و نباید فاصله بین آن ها باشد';
             req.flash('error', req.session.text);
-            res.redirect('/authenication');
+            res.redirect('/authentication');
             return;
         }
         /* Here if the password is lower than 8 character it says error that you have to type password
@@ -142,7 +160,7 @@ app.post('/api/authenication/register', async (req, res) => {
             req.session.icon = 'error';
             req.session.text = 'رمز عبور باید بیشتر از 8 کاراکتر باشد';
             req.flash('error', req.session.text);
-            res.redirect('/authenication');
+            res.redirect('/authentication');
             return;
         };
         // This condition check if the password variable matches the regular expression specified in the regex
@@ -150,7 +168,7 @@ app.post('/api/authenication/register', async (req, res) => {
             req.session.icon = 'error';
             req.session.text = 'رمز عبور  شما باید شامل حروف انگلیسی و اعداد باشد و نباید فاصله بین آن ها باشد';
             req.flash('error', req.session.text);
-            res.redirect('/authenication');
+            res.redirect('/authentication');
             return;
         };
         /* In this condition if the password doesn't match with the confirmPassword it flash error
@@ -159,7 +177,7 @@ app.post('/api/authenication/register', async (req, res) => {
             req.session.icon = 'error';
             req.session.text = 'رمز عبور شما با تکرار آن همخوانی ندارد';
             req.flash('error', req.session.text);
-            res.redirect('/authenication');
+            res.redirect('/authentication');
             return;
         };
         // The emailValidator is a package that help you that check the email that a email is correct or not
@@ -167,7 +185,7 @@ app.post('/api/authenication/register', async (req, res) => {
             req.session.icon = 'error';
             req.session.text = 'ایمیل شما معتبر نیست';
             req.flash('error', req.session.text);
-            res.redirect('/authenication');
+            res.redirect('/authentication');
             return;
         };
 
@@ -202,8 +220,8 @@ app.post('/api/authenication/register', async (req, res) => {
     };
 });
 
-// Create authenication login api
-app.post('/api/authenication/login', async (req, res) => {
+// Create authentication login api
+app.post('/api/authentication/login', async (req, res) => {
     try {
         // Give username and password from body
         const { username, password } = req.body;
@@ -267,14 +285,10 @@ app.post('/api/logout', isLoggedIn, (req, res) => {
     res.redirect('/');
 });
 
-// Create authors route
-app.get('/authors', (req, res) => {
-    res.render('authors');
-});
-
 // Create products route
-app.get('/products', (req, res) => {
-    res.render('explore');
+app.get('/products', async (req, res) => {
+    const products = await Product.find({});
+    res.render('explore', { products });
 });
 
 // Create products info route
@@ -285,6 +299,11 @@ app.get('/productInfo', (req, res) => {
 // Create cart info route
 app.get('/cart', (req, res) => {
     res.render('cart');
+});
+
+// Create authors route
+app.get('/authors', (req, res) => {
+    res.render('authors');
 });
 
 // Create server in 3000 port

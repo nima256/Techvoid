@@ -163,6 +163,7 @@
             </div>
           </div>
         </div> -->
+        <% for (let product of products) { %>
         <div class="col-lg-3">
           <div class="item">
             <div class="row">
@@ -171,14 +172,14 @@
                   <img src="assets/images/logo.png" alt=""
                     style="max-width: 50px; max-height: 50px; border-radius: 50%;">
                 </span>
-                <img src="assets/images/market-01.jpg" alt="" style="border-radius: 20px;">
-                <h4>iPhone 15</h4>
+                <img src="<%= product.img %>" alt="" style="border-radius: 20px;">
+                <h4><%= product.name %></h4>
               </div>
               <div class="col-lg-12">
                 <div class="line-dec"></div>
                 <div class="row">
                   <div class="col-6">
-                    <span>Price: <br> <strong>5.15 ETH</strong></span>
+                    <span>Price: <br> <strong><%= product.price %></strong></span>
                   </div>
                   <div class="col-6">
                     <span>Available <br> <strong>26</strong></span>
@@ -193,217 +194,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-3">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-12">
-                <span class="author">
-                  <img src="assets/images/logo.png" alt=""
-                    style="max-width: 50px; max-height: 50px; border-radius: 50%;">
-                </span>
-                <img src="assets/images/market-01.jpg" alt="" style="border-radius: 20px;">
-                <h4>iPhone 15</h4>
-              </div>
-              <div class="col-lg-12">
-                <div class="line-dec"></div>
-                <div class="row">
-                  <div class="col-6">
-                    <span>Price: <br> <strong>5.15 ETH</strong></span>
-                  </div>
-                  <div class="col-6">
-                    <span>Available <br> <strong>26</strong></span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="main-button">
-                  <a href="details.html">View Details</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-12">
-                <span class="author">
-                  <img src="assets/images/logo.png" alt=""
-                    style="max-width: 50px; max-height: 50px; border-radius: 50%;">
-                </span>
-                <img src="assets/images/market-01.jpg" alt="" style="border-radius: 20px;">
-                <h4>iPhone 15</h4>
-              </div>
-              <div class="col-lg-12">
-                <div class="line-dec"></div>
-                <div class="row">
-                  <div class="col-6">
-                    <span>Price: <br> <strong>5.15 ETH</strong></span>
-                  </div>
-                  <div class="col-6">
-                    <span>Available <br> <strong>26</strong></span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="main-button">
-                  <a href="details.html">View Details</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-12">
-                <span class="author">
-                  <img src="assets/images/logo.png" alt=""
-                    style="max-width: 50px; max-height: 50px; border-radius: 50%;">
-                </span>
-                <img src="assets/images/market-01.jpg" alt="" style="border-radius: 20px;">
-                <h4>iPhone 15</h4>
-              </div>
-              <div class="col-lg-12">
-                <div class="line-dec"></div>
-                <div class="row">
-                  <div class="col-6">
-                    <span>Price: <br> <strong>3.63 ETH</strong></span>
-                  </div>
-                  <div class="col-6">
-                    <span>Available <br> <strong>24</strong></span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="main-button">
-                  <a href="details.html">View Details</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-12">
-                <span class="author">
-                  <img src="assets/images/logo.png" alt=""
-                    style="max-width: 50px; max-height: 50px; border-radius: 50%;">
-                </span>
-                <img src="assets/images/market-01.jpg" alt="" style="border-radius: 20px;">
-                <h4>iPhone 15</h4>
-              </div>
-              <div class="col-lg-12">
-                <div class="line-dec"></div>
-                <div class="row">
-                  <div class="col-6">
-                    <span>Price: <br> <strong>4.68 ETH</strong></span>
-                  </div>
-                  <div class="col-6">
-                    <span>Available <br> <strong>28</strong></span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="main-button">
-                  <a href="details.html">View Details</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-12">
-                <span class="author">
-                  <img src="assets/images/logo.png" alt=""
-                    style="max-width: 50px; max-height: 50px; border-radius: 50%;">
-                </span>
-                <img src="assets/images/market-01.jpg" alt="" style="border-radius: 20px;">
-                <h4>iPhone 15</h4>
-              </div>
-              <div class="col-lg-12">
-                <div class="line-dec"></div>
-                <div class="row">
-                  <div class="col-6">
-                    <span>Price: <br> <strong>2.03 ETH</strong></span>
-                  </div>
-                  <div class="col-6">
-                    <span>Available <br> <strong>25</strong></span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="main-button">
-                  <a href="details.html">View Details</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-12">
-                <span class="author">
-                  <img src="assets/images/logo.png" alt=""
-                    style="max-width: 50px; max-height: 50px; border-radius: 50%;">
-                </span>
-                <img src="assets/images/market-01.jpg" alt="" style="border-radius: 20px;">
-                <h4>iPhone 15</h4>
-              </div>
-              <div class="col-lg-12">
-                <div class="line-dec"></div>
-                <div class="row">
-                  <div class="col-6">
-                    <span>Price: <br> <strong>2.03 ETH</strong></span>
-                  </div>
-                  <div class="col-6">
-                    <span>Available <br> <strong>25</strong></span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="main-button">
-                  <a href="details.html">View Details</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-12">
-                <span class="author">
-                  <img src="assets/images/logo.png" alt=""
-                    style="max-width: 50px; max-height: 50px; border-radius: 50%;">
-                </span>
-                <img src="assets/images/market-01.jpg" alt="" style="border-radius: 20px;">
-                <h4>iPhone 15</h4>
-              </div>
-              <div class="col-lg-12">
-                <div class="line-dec"></div>
-                <div class="row">
-                  <div class="col-6">
-                    <span>Price: <br> <strong>2.64 ETH</strong></span>
-                  </div>
-                  <div class="col-6">
-                    <span>Available <br> <strong>25</strong></span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="main-button">
-                  <a href="details.html">View Details</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <% } %>
       </div>
     </div>
   </div>
