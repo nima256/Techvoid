@@ -55,8 +55,20 @@ app.use(async (req, res, next) => {
     res.locals.error = req.flash('error');
     res.locals.ICON = req.session.icon;
     res.locals.TEXT = req.session.text;
+    res.locals.user = await User.findById(req.session.userId);
     next();
 });
+
+// for redirect user that are not logged in
+const isLoggedIn = (req, res, next) => {
+    if (!req.session.userId) {
+        req.session.icon = 'error';
+        req.session.text = 'ابتدا در سایت ما عضو شوید';
+        req.flash('error', req.session.text);
+        return res.redirect('/authentication');
+    };
+    next();
+}
 
 // Create home route
 app.get('/', (req, res) => {
@@ -242,6 +254,17 @@ app.post('/api/authenication/login', async (req, res) => {
         req.flash('error', req.session.text);
         res.redirect('/authentication');
     };
+});
+
+// Logout route
+app.post('/api/logout', isLoggedIn, (req, res) => {
+    /* We set userId to null that when user logged out she/he can't access the pages that you have to
+    be logged in */
+    req.session.userId = null;
+    req.session.icon = 'success';
+    req.session.text = 'شما با موفقیت از حساب خود خارج شدید';
+    req.flash('success', req.session.text);
+    res.redirect('/');
 });
 
 // Create authors route

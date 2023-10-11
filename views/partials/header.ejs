@@ -48,7 +48,18 @@
 
                         <ul class="nav">
                             <li><a href="/" class="active">Home</a></li>
-                            <li><a href="/authenication">Login/Signin</a></li>
+                            <% if(!user) {%>
+                                <li><a href="/authenication">Login/Signin</a></li>
+                            <% } else {%>
+                                <li><a href="/userProfile">Profile</a></li>
+                                <form action="/api/logout" method="post">
+                                    <li>
+                                        <button style="border: none; background-color: transparent;">
+                                                Logout
+                                        </button>
+                                    </li>
+                                </form>
+                        <% } %>
                             <li><a href="/products">Shop</a></li>
                             <li><a href="/authors">About us</a></li>
                             <li><a href="/cart"><img id="cart" width="30" height="30"
