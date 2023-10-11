@@ -61,7 +61,7 @@ app.use(async (req, res, next) => {
     next();
 });
 
-// for redirect user that are not logged in
+// For redirect user that are not logged in
 const isLoggedIn = (req, res, next) => {
     /* When a user register or login to website we add a userId to session if it doesn't exsist
     it means that user is not logged in so we redirect it to /authentication route */
@@ -319,17 +319,16 @@ app.get('/productInfo/:id', async (req, res) => {
 
 // Create cart info route
 app.get('/cart', isLoggedIn, (req, res) => {
-    console.log(req.session.carts);
     res.render('cart', { carts: req.session.carts });
 });
 
 app.get('/cart/add/:id', isLoggedIn, async (req, res) => {
     try {
-        // give product id to add it in cart:
+        // Give product id to add it in cart:
         const { id } = req.params;
-        // find that product:
+        // Find that product:
         const product = await Product.findById(id);
-        // if it doesn't exsist:
+        // If it doesn't exsist:
         if (!product) {
             req.session.icon = 'error';
             req.session.text = 'محصول درخواستی شما یافت نشد';
@@ -337,13 +336,13 @@ app.get('/cart/add/:id', isLoggedIn, async (req, res) => {
             res.redirect('back');
             return;
         };
-        /*  for adding a product to cart we need a session because we have to use it in ejs for rendering it we need to create a variable 
+        /*  For adding a product to cart we need a session because we have to use it in ejs for rendering it we need to create a variable 
             and we set the value of it req.session.carts
          */
         if (!req.session.carts) {
-            // so now if it doesn't exsist we create a array of it
+            // So now if it doesn't exsist we create a array of it
             req.session.carts = [];
-            /*  now when we found that product that user click on add to product now we have it's id name and etc 
+            /*  Now when we found that product that user click on add to product now we have it's id name and etc 
                 we set id name and etc and set it exactly as same as the product information and we push it inside the req.session.carts array
             */
             req.session.carts.push({
@@ -355,31 +354,31 @@ app.get('/cart/add/:id', isLoggedIn, async (req, res) => {
                 qty: 1,
             });
 
-            // now if the req.session.carts exsist it means that user has a product in his cart and wants to add another product 
+            // Now if the req.session.carts exsist it means that user has a product in his cart and wants to add another product 
         } else {
 
-            // now there is another condition that if the product that the user is adding is the same product or not
+            // Now there is another condition that if the product that the user is adding is the same product or not
 
-            // we save req.session.carts in a variable to we will make our code shorter
+            // We save req.session.carts in a variable to we will make our code shorter
             let cart = req.session.carts;
-            // and then we create a bool to see if there is a repeatedly product or not
+            // And then we create a bool to see if there is a repeatedly product or not
             let newItem = true;
 
-            // we create a loop by the cart.length
+            // We create a loop by the cart.length
             for (let i = 0; i < cart.length; i++) {
-                /* maybe it would be hard to undrestand we are checking all the products id that are added to the cart if they are 
+                /* Maybe it would be hard to undrestand we are checking all the products id that are added to the cart if they are 
                    the same as the earlier one insted of adding another one we add one to their qty and the qty in cart would be 2 or 
                    as many as user click on add to cart button */
 
                 if (cart[i].id == id) {
                     cart[i].qty++;
-                    // after that we will set newItem to false
+                    // After that we will set newItem to false
                     newItem = false;
                     break;
                 };
             };
 
-            // now if it wasn't false it means that user doesn't clicks on a repeatedly product so we push another product in the cart array
+            // Now if it wasn't false it means that user doesn't clicks on a repeatedly product so we push another product in the cart array
             if (newItem) {
                 cart.push({
                     id: product._id,
