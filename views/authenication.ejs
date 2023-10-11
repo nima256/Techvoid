@@ -98,11 +98,11 @@
                         </div>
                         <p id="email-error"></p>
                         <div class="field">
-                            <input id="password" type="password" placeholder="کلمه عبور" required name="password">
+                            <input id="password" type="password" placeholder="کلمه عبور" name="password">
                         </div>
                         <p id="error-password"></p>
                         <div class="field">
-                            <input id="confirm-password" type="password" placeholder="تکرار کلمه عبور" required
+                            <input id="confirm-password" type="password" placeholder="تکرار کلمه عبور"
                                 name="confirmPassword">
                         </div>
                         <p id="error-confirm"></p>
@@ -115,8 +115,6 @@
             </div>
         </div>
 
-        <script src="assets/js/signup.js"></script>
-
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -128,11 +126,13 @@
                     text: '<%= TEXT %>',
                     width: 400,
                     showConfirmButton: false,
-                    timer: 1800
+                    timer: 3000
                 })
             </script>
             <% } %>
 
+
+                <script src="assets/js/signup.js"></script>
     </body>
 
 </html>

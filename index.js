@@ -29,7 +29,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Public folder for css js font and etc.
-app.use(express.static('public'));
+app.use(express.static('public/'));
 
 // For access to req.body
 app.use(express.urlencoded({ extended: true }));
@@ -49,7 +49,7 @@ var icon;
 var title;
 var text;
 
-// create local variable to access them in all pages 
+// Create local variable to access them in all pages 
 app.use(async (req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -70,58 +70,26 @@ app.get('/authenication', (req, res) => {
 
 // Create authenication register api
 app.post('/api/authenication/register', async (req, res) => {
+    // Give inputes from body and save it to variable
     const { email, username, password, confirmPassword } = req.body;
+
+    // To see if there is a user or not
     const exsistUser = await User.findOne({ username });
+
+    /* A variable that it says that character most be A-Z or a-z and numbers and it must not have space
+    "^" This character represent start of the string 
+    "$" This character represent end of the string
+    "+" This character represent that there must be at least one character matching the pattern
+    The "a-z" and "A-Z" characters represent all lowercase and uppercase letters
+    "0-9" represents all digits
+    */
     const regex = /^[a-zA-Z0-9]+$/;
-    if (!password || !username || !email || confirmPassword) {
-        req.session.icon = 'error';
-        req.session.text = 'نام کاربری یا رمز عبور یا ایمیل وارد نشده است';
-        req.flash('error', req.session.text);
-        res.redirect('/authenication');
-        return;
-    };
-    if (username.length < 8) {
-        req.session.icon = 'error';
-        req.session.text = 'نام کاربری باید بیشتر از 8 کاراکتر باشد';
-        req.flash('error', req.session.text);
-        res.redirect('/authenication');
-        return;
-    };
-    if (!regex.test(username)) {
-        req.session.icon = 'error';
-        req.session.text = 'نام کاربری شما باید شامل حروف انگلیسی و اعداد باشد و نباید فاصله بین آن ها باشد';
-        req.flash('error', req.session.text);
-        res.redirect('/authenication');
-        return;
-    }
-    if (password.length < 8) {
-        req.session.icon = 'error';
-        req.session.text = 'رمز عبور باید بیشتر از 8 کاراکتر باشد';
-        req.flash('error', req.session.text);
-        res.redirect('/authenication');
-        return;
-    };
-    if (!regex.test(password)) {
-        req.session.icon = 'error';
-        req.session.text = 'رمز عبور  شما باید شامل حروف انگلیسی و اعداد باشد و نباید فاصله بین آن ها باشد';
-        req.flash('error', req.session.text);
-        res.redirect('/authenication');
-        return;
-    };
-    if (password !== confirmPassword) {
-        req.session.icon = 'error';
-        req.session.text = 'رمز عبور شما با تکرار آن همخوانی ندارد';
-        req.flash('error', req.session.text);
-        res.redirect('/authenication');
-        return;
-    };
-    if (!emailValidator.validate(email)) {
-        req.session.icon = 'error';
-        req.session.text = 'ایمیل شما معتبر نیست';
-        req.flash('error', req.session.text);
-        res.redirect('/authenication');
-        return;
-    };
+
+    /* I write "exsistUser" var above and it search for the user with his/her username 
+    if it exsist the user info will be saved in that var and in this condition i write
+    if exsist user has sth in it it means user had registered before and the user must login
+    insted of registering
+    */
     if (exsistUser) {
         req.session.icon = 'error';
         req.session.text = 'نام کاربری شما قبلا در سایت ثبت شده است';
@@ -129,9 +97,81 @@ app.post('/api/authenication/register', async (req, res) => {
         res.redirect('/authenication');
         return;
     };
+    /* In this condition if user didn't enter password or username or etc it says error and says
+    you must fill them */
+    if (!password || !username || !email || !confirmPassword) {
+        req.session.icon = 'error';
+        req.session.text = 'نام کاربری یا رمز عبور یا تکرار رمز عبور یا ایمیل وارد نشده است';
+        req.flash('error', req.session.text);
+        res.redirect('/authenication');
+        return;
+    };
+    /* Here if the username is lower than 8 character it says error that you have to type username
+    that has 8 character */
+    if (username.length < 8) {
+        req.session.icon = 'error';
+        req.session.text = 'نام کاربری باید بیشتر از 8 کاراکتر باشد';
+        req.flash('error', req.session.text);
+        res.redirect('/authenication');
+        return;
+    };
+    // This condition check if the username variable matches the regular expression specified in the regex
+    if (!regex.test(username)) {
+        req.session.icon = 'error';
+        req.session.text = 'نام کاربری شما باید شامل حروف انگلیسی و اعداد باشد و نباید فاصله بین آن ها باشد';
+        req.flash('error', req.session.text);
+        res.redirect('/authenication');
+        return;
+    }
+    /* Here if the password is lower than 8 character it says error that you have to type password
+    that has 8 character */
+    if (password.length < 8) {
+        req.session.icon = 'error';
+        req.session.text = 'رمز عبور باید بیشتر از 8 کاراکتر باشد';
+        req.flash('error', req.session.text);
+        res.redirect('/authenication');
+        return;
+    };
+    // This condition check if the password variable matches the regular expression specified in the regex
+    if (!regex.test(password)) {
+        req.session.icon = 'error';
+        req.session.text = 'رمز عبور  شما باید شامل حروف انگلیسی و اعداد باشد و نباید فاصله بین آن ها باشد';
+        req.flash('error', req.session.text);
+        res.redirect('/authenication');
+        return;
+    };
+    /* In this condition if the password doesn't match with the confirmPassword it flash error
+    that says your password must match with the first password that you entered */
+    if (password !== confirmPassword) {
+        req.session.icon = 'error';
+        req.session.text = 'رمز عبور شما با تکرار آن همخوانی ندارد';
+        req.flash('error', req.session.text);
+        res.redirect('/authenication');
+        return;
+    };
+    // The emailValidator is a package that help you that check the email that a email is correct or not
+    if (!emailValidator.validate(email)) {
+        req.session.icon = 'error';
+        req.session.text = 'ایمیل شما معتبر نیست';
+        req.flash('error', req.session.text);
+        res.redirect('/authenication');
+        return;
+    };
 
+
+    /* Here we use the bcrypt package to generate a hashed password for user security 
+    The "genSalt" method generates a random salt value that will be used in the password hashing process
+    The hash method is the last step of create a hashed password for user
+    The "hash" method takes two arguments: the password to be hashed and the salt value generated earlier.
+    */
     const salt = await bcrypt.genSalt(12);
     const hash = await bcrypt.hash(password, salt);
+
+    /* The user info will be save in the database here 
+    The username will equal to username that we specify it above the code
+    The password will be equal the hashed password that we created it earlier
+    The email will be equal to email that we specify it above the code
+    */
     const user = new User({ username, password: hash, email });
     await user.save();
 
