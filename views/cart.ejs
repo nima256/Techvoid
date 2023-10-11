@@ -66,6 +66,7 @@
     </header>
     <br><br><br><br>
 
+    <% if(carts) {%>
     <div class="card">
         <div class="row">
             <div class="col-md-8 cart">
@@ -77,45 +78,25 @@
                         <div class="col align-self-center text-right text-muted">3 items</div>
                     </div>
                 </div>
-                <div class="row border-top border-bottom">
-                    <div class="row main align-items-center">
-                        <div class="col-2"><img class="img-fluid" src="assets/images/market-01.jpg"></div>
-                        <div class="col">
-                            <div class="row text-muted">Shirt</div>
-                            <div class="row">iPhone 15</div>
+                <% for(let cart of carts) {%>
+                    <div class="row border-top border-bottom">
+                        <div class="row main align-items-center">
+                            <div class="col-2"><img class="img-fluid" src="<%= cart.img %>"></div>
+                            <div class="col">
+                                <div class="row text-muted">Phone</div>
+                                <div class="row"><%= cart.name %></div>
+                            </div>
+                            <div class="col">
+                                <a href="/cart/update/<%= cart.id %>?action=remove">-</a>
+                                <a href="" class="border"><%= cart.qty %></a>
+                                <a href="/cart/update/<%= cart.id %>?action=add">+</a>
+                            </div>
+                            <div class="col">&euro; <%= cart.price %> 
+                                <a href="/cart/update/<%= cart.id %>?action=clear">&#10005;</a>
+                            </div>
                         </div>
-                        <div class="col">
-                            <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
-                        </div>
-                        <div class="col">&euro; 44.00 <span class="close">&#10005;</span></div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="row main align-items-center">
-                        <div class="col-2"><img class="img-fluid" src="assets/images/market-01.jpg"></div>
-                        <div class="col">
-                            <div class="row text-muted">Phone</div>
-                            <div class="row">iPhone 15</div>
-                        </div>
-                        <div class="col">
-                            <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
-                        </div>
-                        <div class="col">&euro; 44.00 <span class="close">&#10005;</span></div>
-                    </div>
-                </div>
-                <div class="row border-top border-bottom">
-                    <div class="row main align-items-center">
-                        <div class="col-2"><img class="img-fluid" src="assets/images/market-01.jpg"></div>
-                        <div class="col">
-                            <div class="row text-muted">Phone</div>
-                            <div class="row">iPhone 15</div>
-                        </div>
-                        <div class="col">
-                            <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
-                        </div>
-                        <div class="col">&euro; 44.00 <span class="close">&#10005;</span></div>
-                    </div>
-                </div>
+                <% } %>
                 <div class="back-to-shop"><a href="#">&leftarrow;</a><span class="text-muted">Back to shop</span></div>
             </div>
             <div class="col-md-4 summary">
@@ -142,6 +123,49 @@
                 <button class="btn">CHECKOUT</button>
             </div>
         </div>
-
     </div>
+    <% } else { %>
+        <div class="card">
+            <div class="row">
+                <div class="col-md-8 cart">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col">
+                                <h4><b>Shopping Cart</b></h4>
+                            </div>
+                            <div class="col align-self-center text-center text-muted">سبد خرید خالی است</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<% if(success.length) {%>
+  <script>
+    Swal.fire({
+      position: 'top',
+      icon: '<%= ICON %>',
+      text: '<%= TEXT %>',
+      width: 400,
+      showConfirmButton: false,
+      timer: 1900
+    })
+  </script>
+  <% } %>
+    <% if(error.length) {%>
+      <script>
+        Swal.fire({
+          position: 'top',
+          icon: '<%= ICON %>',
+          text: '<%= TEXT %>',
+          width: 400,
+          showConfirmButton: false,
+          timer: 1900
+        })
+      </script>
+      <% } %>
+
 </body>

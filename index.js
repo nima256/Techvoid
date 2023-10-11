@@ -57,6 +57,7 @@ app.use(async (req, res, next) => {
     res.locals.ICON = req.session.icon;
     res.locals.TEXT = req.session.text;
     res.locals.user = await User.findById(req.session.userId);
+    res.locals.carts = req.session.carts;
     next();
 });
 
@@ -279,6 +280,7 @@ app.post('/api/logout', isLoggedIn, (req, res) => {
     /* We set userId to null that when user logged out she/he can't access the pages that you have to
     be logged in */
     req.session.userId = null;
+    req.session.carts = null;
     req.session.icon = 'success';
     req.session.text = 'شما با موفقیت از حساب خود خارج شدید';
     req.flash('success', req.session.text);
@@ -292,13 +294,173 @@ app.get('/products', async (req, res) => {
 });
 
 // Create products info route
-app.get('/productInfo', (req, res) => {
-    res.render('details');
+app.get('/productInfo/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        // find product from that id
+        const product = await Product.findById(id);
+        console.log(product);
+        res.render('details', { product });
+    } catch (e) {
+        if (e.message.includes("Cast to ObjectId failed")) {
+            req.session.icon = 'error';
+            req.session.text = 'محصول یافت نشد';
+            req.flash('error', req.session.text);
+            res.redirect('/');
+            return;
+        };
+        req.session.icon = 'error';
+        req.session.text = 'خطایی رخ داده است';
+        req.flash('error', req.session.text);
+        res.redirect('/');
+    };
 });
 
 // Create cart info route
-app.get('/cart', (req, res) => {
-    res.render('cart');
+app.get('/cart', isLoggedIn, (req, res) => {
+    console.log(req.session.carts);
+    res.render('cart', { carts: req.session.carts });
+});
+
+app.get('/cart/add/:id', isLoggedIn, async (req, res) => {
+    try {
+        // give product id to add it in cart:
+        const { id } = req.params;
+        // find that product:
+        const product = await Product.findById(id);
+        // if it doesn't exsist:
+        if (!product) {
+            req.session.icon = 'error';
+            req.session.text = 'محصول درخواستی شما یافت نشد';
+            req.flash('error', req.session.text);
+            res.redirect('back');
+            return;
+        };
+        /*  for adding a product to cart we need a session because we have to use it in ejs for rendering it we need to create a variable 
+            and we set the value of it req.session.carts
+         */
+        if (!req.session.carts) {
+            // so now if it doesn't exsist we create a array of it
+            req.session.carts = [];
+            /*  now when we found that product that user click on add to product now we have it's id name and etc 
+                we set id name and etc and set it exactly as same as the product information and we push it inside the req.session.carts array
+            */
+            req.session.carts.push({
+                id: product._id,
+                name: product.name,
+                price: product.price,
+                category: product.category,
+                img: product.img,
+                qty: 1,
+            });
+
+            // now if the req.session.carts exsist it means that user has a product in his cart and wants to add another product 
+        } else {
+
+            // now there is another condition that if the product that the user is adding is the same product or not
+
+            // we save req.session.carts in a variable to we will make our code shorter
+            let cart = req.session.carts;
+            // and then we create a bool to see if there is a repeatedly product or not
+            let newItem = true;
+
+            // we create a loop by the cart.length
+            for (let i = 0; i < cart.length; i++) {
+                /* maybe it would be hard to undrestand we are checking all the products id that are added to the cart if they are 
+                   the same as the earlier one insted of adding another one we add one to their qty and the qty in cart would be 2 or 
+                   as many as user click on add to cart button */
+
+                if (cart[i].id == id) {
+                    cart[i].qty++;
+                    // after that we will set newItem to false
+                    newItem = false;
+                    break;
+                };
+            };
+
+            // now if it wasn't false it means that user doesn't clicks on a repeatedly product so we push another product in the cart array
+            if (newItem) {
+                cart.push({
+                    id: product._id,
+                    name: product.name,
+                    price: product.price,
+                    category: product.category,
+                    img: product.img,
+                    qty: 1,
+                });
+            };
+        };
+
+        req.session.icon = 'success';
+        req.session.text = 'محصول به سبد خرید اضافه شد';
+        req.flash('error', req.session.text);
+        res.redirect('back');
+    } catch (e) {
+        req.session.icon = 'error';
+        req.session.text = 'خطایی رخ داده است';
+        req.flash('error', req.session.text);
+        res.redirect('back');
+    };
+});
+
+app.get('/cart/update/:id', isLoggedIn, async (req, res) => {
+    try {
+        // we get the id of that product that user wants to update it
+        const { id } = req.params;
+        // we get the action from query that it must be "add" , "remove" , "clear"
+        const { action } = req.query;
+        // and we set req.session.carts to a var to be easy to access it
+        const cart = req.session.carts;
+
+        // create a loop for cart.length that check all the products id that are in the cart
+        for (let i = 0; i < cart.length; i++) {
+            if (cart[i].id == id) {
+                // create a switch if for action that it must be "add" , "remove" , "clear"  
+                switch (action) {
+                    // if it is add we add that specific product a qty
+                    case "add":
+                        cart[i].qty++;
+                        break;
+                    // if it is remove we remove that specific product a qty
+                    case "remove":
+                        cart[i].qty--;
+                        break;
+                    // if it is clear we clear that specific product from cart
+                    case "clear":
+                        cart.splice(i, 1);
+                        if (cart.length == 0) {
+                            delete req.session.carts;
+                        }
+                        break;
+                    default:
+                        req.session.icon = 'error';
+                        req.session.text = 'خطار در آپدیت سبد خرید شما';
+                        req.flash('error', req.session.text);
+                        break;
+                };
+            };
+            if (cart[i].qty <= 0) {
+                cart.splice(i, 1);
+            }
+            break;
+        };
+        req.session.icon = 'success';
+        req.session.text = 'سبد خرید شما آپدیت شد';
+        req.flash('success', req.session.text);
+        res.redirect('/cart');
+    } catch (e) {
+        if (e.message.includes("Cannot read properties of undefined (reading 'qty')")) {
+            req.session.icon = 'success';
+            req.session.text = 'سبد خرید شما آپدت شد';
+            req.flash('sucess', req.session.text);
+            res.redirect('/cart');
+            return;
+        };
+        req.session.icon = 'error';
+        req.session.text = e;
+        req.flash('error', req.session.text);
+        res.redirect('back');
+    };
 });
 
 // Create authors route

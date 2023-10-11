@@ -6,18 +6,22 @@
         <div class="col-lg-12">
           <div class="section-heading">
             <div class="line-dec"></div>
-            <h2>info <em>iPhone 15</em> Here.</h2>
+            <h2>info <em>
+                <%= product.name %>
+              </em> Here.</h2>
           </div>
         </div>
         <div class="col-lg-7">
           <div class="left-image">
-            <img src="assets/images/market-01.jpg" alt="" style="border-radius: 20px;">
+            <img src="<%= product.img %>" alt="" style="border-radius: 20px;">
           </div>
         </div>
         <div class="col-lg-5 align-self-center">
-          <h4>iPhone 15</h4>
+          <h4>
+            <%= product.name %>
+          </h4>
           <span class="author">
-            <img src="assets/images/author-02.jpg" alt="" style="max-width: 50px; border-radius: 50%;">
+            <img src="/assets/images/author-02.jpg" alt="" style="max-width: 50px; border-radius: 50%;">
             <h6>Teck void<br><a href="#"></a>Teck void</h6>
           </span>
           <p>Lorem ipsum dolor sit amet, consectetu dipiscingei elit, sed do eiusmod tempor incididunt ut labore et
@@ -25,7 +29,9 @@
           <div class="row">
             <div class="col-3">
               <span class="bid">
-                price<br><strong>6.06 ETH</strong><br><em></em>
+                price<br><strong>
+                  <%= product.price %>
+                </strong><br><em></em>
               </span>
             </div>
             <div class="col-4">
@@ -40,7 +46,11 @@
             </div>
           </div>
           <br>
-          <button type="submit" id="form-submit" class="main-button">Submit Now</button>
+          <button type="submit" id="form-submit" class="main-button">
+            <a href="/cart/add/<%= product._id %>">
+              Add to cart
+            </a>
+          </button>
           </form>
         </div>
         <div class="col-lg-12">
@@ -65,7 +75,7 @@
               <div class="col-lg-4 col-md-6">
                 <div class="item">
                   <div class="left-img">
-                    <img src="assets/images/logo.png" alt="">
+                    <img src="/assets/images/logo.png" alt="">
                   </div>
                   <div class="right-content">
                     <h4>iPhone 15</h4>
@@ -87,7 +97,7 @@
               <div class="col-lg-4 col-md-6">
                 <div class="item">
                   <div class="left-img">
-                    <img src="assets/images/logo.png" alt="">
+                    <img src="/assets/images/logo.png" alt="">
                   </div>
                   <div class="right-content">
                     <h4>iPhone 15</h4>
@@ -109,7 +119,7 @@
               <div class="col-lg-4 col-md-6">
                 <div class="item">
                   <div class="left-img">
-                    <img src="assets/images/logo.png" alt="">
+                    <img src="/assets/images/logo.png" alt="">
                   </div>
                   <div class="right-content">
                     <h4>iPhone 15</h4>
@@ -131,7 +141,7 @@
               <div class="col-lg-4 col-md-6">
                 <div class="item">
                   <div class="left-img">
-                    <img src="assets/images/logo.png" alt="">
+                    <img src="/assets/images/logo.png" alt="">
                   </div>
                   <div class="right-content">
                     <h4>iPhone 15</h4>
@@ -153,7 +163,7 @@
               <div class="col-lg-4 col-md-6">
                 <div class="item">
                   <div class="left-img">
-                    <img src="assets/images/logo.png" alt="">
+                    <img src="/assets/images/logo.png" alt="">
                   </div>
                   <div class="right-content">
                     <h4>iPhone 15</h4>
@@ -175,7 +185,7 @@
               <div class="col-lg-4 col-md-6">
                 <div class="item">
                   <div class="left-img">
-                    <img src="assets/images/logo.png" alt="">
+                    <img src="/assets/images/logo.png" alt="">
                   </div>
                   <div class="right-content">
                     <h4>iPhone 15</h4>
