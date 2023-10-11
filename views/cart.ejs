@@ -75,7 +75,7 @@
                         <div class="col">
                             <h4><b>Shopping Cart</b></h4>
                         </div>
-                        <div class="col align-self-center text-right text-muted">3 items</div>
+                        <div id="Itemsqty" class="col align-self-center text-right text-muted"></div>
                     </div>
                 </div>
                 <% for(let cart of carts) {%>
@@ -88,7 +88,7 @@
                             </div>
                             <div class="col">
                                 <a href="/cart/update/<%= cart.id %>?action=remove">-</a>
-                                <a href="" class="border"><%= cart.qty %></a>
+                                <a class="border"><%= cart.qty %></a>
                                 <a href="/cart/update/<%= cart.id %>?action=add">+</a>
                             </div>
                             <div class="col">&euro; <%= cart.price %> 
@@ -101,24 +101,16 @@
             </div>
             <div class="col-md-4 summary">
                 <div>
-                    <h5><b>Summary</b></h5>
+                    <h5><b></b></h5>
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col" style="padding-left:0;">ITEMS 3</div>
-                    <div class="col text-right">&euro; 132.00</div>
+                    <div class="col" style="padding-left:0;"></div>
+                    <div class="col text-right"></div>
                 </div>
-                <form>
-                    <p>SHIPPING</p>
-                    <select>
-                        <option class="text-muted">Standard-Delivery- &euro;5.00</option>
-                    </select>
-                    <p>GIVE CODE</p>
-                    <input id="code" placeholder="Enter your code">
-                </form>
                 <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                     <div class="col">TOTAL PRICE</div>
-                    <div class="col text-right">&euro; 137.00</div>
+                    <div id="totalpricetopay" class="col text-right">&euro; 137.00</div>
                 </div>
                 <button class="btn">CHECKOUT</button>
             </div>
@@ -141,6 +133,25 @@
         </div>
     <% } %>
 
+    <script>
+        // Initialize total quantity and total price variables
+        let totalQuantity = 0;
+        let totalPrice = 0;
+    
+        // Loop through the cart items in EJS
+        <% for (let cart of carts) { %>
+            // Update total quantity
+            totalQuantity += <%= cart.qty %>;
+    
+            // Update total price
+            totalPrice += <%= cart.qty * cart.price %>;
+        <% } %>
+    
+        // Update the quantity and total price in the DOM
+        document.getElementById("Itemsqty").innerText = totalQuantity + " Items";
+        document.getElementById("totalpricetopay").innerText = `€ ${totalPrice.toFixed()}`;
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <% if(success.length) {%>

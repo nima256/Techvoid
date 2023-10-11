@@ -75,8 +75,9 @@ const isLoggedIn = (req, res, next) => {
 }
 
 // Create home route
-app.get('/', (req, res) => {
-    res.render('index');
+app.get('/', async (req, res) => {
+    const products = await Product.find({}).limit(4);
+    res.render('index', { products });
 });
 
 // Create authentication route
@@ -405,30 +406,27 @@ app.get('/cart/add/:id', isLoggedIn, async (req, res) => {
 
 app.get('/cart/update/:id', isLoggedIn, async (req, res) => {
     try {
-        // we get the id of that product that user wants to update it
+        // Get the id of the product that the user wants to update
         const { id } = req.params;
-        // we get the action from query that it must be "add" , "remove" , "clear"
+        // Get the action from the query, which must be "add", "remove", or "clear"
         const { action } = req.query;
-        // and we set req.session.carts to a var to be easy to access it
+        // Get the cart from the session
         const cart = req.session.carts;
 
-        // create a loop for cart.length that check all the products id that are in the cart
+        // Loop through the cart to find the specific product
         for (let i = 0; i < cart.length; i++) {
             if (cart[i].id == id) {
-                // create a switch if for action that it must be "add" , "remove" , "clear"  
+                // Handle the action based on "add", "remove", or "clear"
                 switch (action) {
-                    // if it is add we add that specific product a qty
                     case "add":
                         cart[i].qty++;
                         break;
-                    // if it is remove we remove that specific product a qty
                     case "remove":
                         cart[i].qty--;
                         break;
-                    // if it is clear we clear that specific product from cart
                     case "clear":
                         cart.splice(i, 1);
-                        if (cart.length == 0) {
+                        if (cart.length === 0) {
                             delete req.session.carts;
                         }
                         break;
@@ -437,13 +435,12 @@ app.get('/cart/update/:id', isLoggedIn, async (req, res) => {
                         req.session.text = 'خطار در آپدیت سبد خرید شما';
                         req.flash('error', req.session.text);
                         break;
-                };
-            };
+                }
+            }
             if (cart[i].qty <= 0) {
                 cart.splice(i, 1);
             }
-            break;
-        };
+        }
         req.session.icon = 'success';
         req.session.text = 'سبد خرید شما آپدیت شد';
         req.flash('success', req.session.text);
@@ -452,15 +449,15 @@ app.get('/cart/update/:id', isLoggedIn, async (req, res) => {
         if (e.message.includes("Cannot read properties of undefined (reading 'qty')")) {
             req.session.icon = 'success';
             req.session.text = 'سبد خرید شما آپدت شد';
-            req.flash('sucess', req.session.text);
+            req.flash('success', req.session.text);
             res.redirect('/cart');
             return;
-        };
+        }
         req.session.icon = 'error';
         req.session.text = e;
         req.flash('error', req.session.text);
         res.redirect('back');
-    };
+    }
 });
 
 // Create authors route
